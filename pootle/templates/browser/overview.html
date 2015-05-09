@@ -1,6 +1,6 @@
 {% extends browser_extends %}
 
-{% load assets cleanhtml i18n locale common_tags profile_tags %}
+{% load assets cleanhtml i18n locale common_tags profile_tags staticfiles %}
 
 {% get_current_language as LANGUAGE_CODE %}
 
@@ -125,11 +125,7 @@
 </div>
 {% endif %}
 
-{% if table %}
-<div class="bd" lang="{{ LANGUAGE_CODE }}">
-  {% display_table table %}
-</div>
-{% endif %}
+<div class="js-browser-table"></div>
 {% endblock content %}
 
 {% block scripts_extra %}
@@ -143,6 +139,11 @@ $(function () {
     isAdmin: {{ is_admin|yesno:"true,false" }},
     data: {{ stats|safe }}
   });*/
+
+  PTL.browser2.init({
+    initialPootlePath: '{{ pootle_path }}',
+    initialData: {{ stats|safe }}
+  });
 
   {% if 'finished' in request.GET %}
   PTL.msg.show({

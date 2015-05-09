@@ -69,7 +69,7 @@ PTL.dropdown = require('./dropdown.js');
 PTL.msg = require('./msg.js');
 PTL.search = require('./search.js');
 PTL.score = require('./score.js');
-PTL.stats = require('./stats.js');
+PTL.browser2 = require('./browser/index.js');
 PTL.utils = require('./utils.js');
 
 

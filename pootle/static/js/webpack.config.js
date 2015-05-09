@@ -20,6 +20,7 @@ var entries = {
   user: './user/app.js',
   common: ['./common.js'],
   editor: ['./editor/app.js'],
+  browser: ['./browser/index.js'],
   reports: ['./reports/app.js'],
   vendor: ['react', 'react/addons', 'jquery', 'underscore', 'backbone'],
 };

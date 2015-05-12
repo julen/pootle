@@ -138,11 +138,11 @@
 <script type="text/javascript">
 $(function () {
   PTL.search.init();
-  PTL.stats.init({
+  /*PTL.stats.init({
     pootlePath: "{{ pootle_path }}",
     isAdmin: {{ is_admin|yesno:"true,false" }},
     data: {{ stats|safe }}
-  });
+  });*/
 
   {% if 'finished' in request.GET %}
   PTL.msg.show({

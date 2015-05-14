@@ -326,6 +326,8 @@ class CachedTreeItem(TreeItem):
         """get stats for self and - optionally - for children"""
         self.initialize_children()
         result = {
+            'pootle_path': self.pootle_path,
+            'display_name': getattr(self, 'code', ''),
             'total': None,
             'translated': None,
             'fuzzy': None,

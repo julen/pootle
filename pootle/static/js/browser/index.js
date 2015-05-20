@@ -8,11 +8,10 @@
 
 'use strict';
 
-import FluxComponent from 'flummox/component';
 import React from 'react';
+import { BrowserHistory, Route, Router } from 'react-router';
 
 import BrowserController from './components/BrowserController';
-import Flux from './flux';
 
 
 const mountNodeSelector = '.js-browser-table';
@@ -21,15 +20,23 @@ const mountNodeSelector = '.js-browser-table';
 module.exports = {
 
   init(props) {
-    let flux = new Flux();
+    function wrapComponent(Component, props) {
+      return React.createClass({
+        render() {
+          return <Component {...this.props} {...props} />;
+        }
+      });
+    }
 
-    let BrowserApp = (
-      <FluxComponent flux={flux} connectToStores={['stats']}>
-        <BrowserController {...props} />
-      </FluxComponent>
+    let app = (
+      <Router history={BrowserHistory}>
+        <Route path={l('/')} component={wrapComponent(BrowserController, props)}>
+          <Route path="*" name="browse" component={BrowserController} />
+        </Route>
+      </Router>
     );
 
-    React.render(BrowserApp, document.querySelector(mountNodeSelector));
+    React.render(app, document.querySelector(mountNodeSelector));
   },
 
 };

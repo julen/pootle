@@ -10,6 +10,24 @@
 
 import cx from 'classnames';
 import React from 'react';
+import { Link } from 'react-router';
+
+
+let BrowseLink = React.createClass({
+  propTypes: {
+    flux: React.PropTypes.object.isRequired,
+    to: React.PropTypes.string.isRequired,
+  },
+
+  handleClick(e) {
+    this.props.flux.getActions('stats').gotoPath(pootlePath);
+  },
+
+  render() {
+    const { to } = this.props;
+    return <Link to={to}>{to}</Link>;
+  }
+});
 
 
 let StatsTable = React.createClass({
@@ -40,12 +58,12 @@ let StatsTable = React.createClass({
       'is-disabled': item.is_disabled,
     });
 
-    console.log(item);
     return (
       <tr className={rowClassNames} key={key}>
 
       {fields.indexOf('name') !== -1 &&
         <td className={"stats-name " + item.icon}>
+          <BrowseLink to={item.pootle_path} />
           <a href="#" onClick={this.handleGotoPath.bind(this, item.pootle_path)}>
             <i className={"icon-" + item.icon}></i>
             <span>{item.pootle_path}</span>

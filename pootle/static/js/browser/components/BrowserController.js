@@ -12,6 +12,10 @@ import React from 'react';
 import FluxComponent from 'flummox/component';
 
 import StatsTable from './StatsTable';
+import Flux from '../flux';
+
+
+let flux = new Flux();
 
 
 let BrowserController = React.createClass({
@@ -26,8 +30,9 @@ let BrowserController = React.createClass({
   /* Lifecycle */
 
   componentWillMount() {
+    console.log(this.props);
     if (this.props.initialData) {
-      let statActions = this.props.flux.getActions('stats');
+      let statActions = flux.getActions('stats');
       statActions.loadInitial(this.props.initialData);
     }
   },
@@ -40,7 +45,9 @@ let BrowserController = React.createClass({
     // might end up having multiple table instances rendering different
     // views over the same data (with vfolders, for instance).
     return (
-      <StatsTable {...this.props} />
+      <FluxComponent flux={flux} connectToStores={['stats']}>
+        <StatsTable {...this.props} />
+      </FluxComponent>
     );
   }
 

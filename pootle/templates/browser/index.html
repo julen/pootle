@@ -169,6 +169,9 @@
   {% display_table table %}
 </div>
 {% endif %}
+
+
+<div class="js-mnt-browsing-table"></div>
 {% endblock content %}
 
 {% block scripts_extra %}
@@ -186,6 +189,7 @@ $(function () {
     topContributorsData: {{ top_scorers_data|to_js }},
     statsRefreshAttemptsCount: {{ stats_refresh_attempts_count }},
     uiLocaleDir: '{{ LANGUAGE_BIDI|yesno:"rtl,ltr" }}',
+    data: {{ browsing_data|to_js }},
   });
 });
 </script>

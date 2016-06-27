@@ -21,6 +21,7 @@ import UserEvent from 'components/UserEvent';
 import cookie from 'utils/cookie';
 import { q } from 'utils/dom';
 
+import BrowsingTable from './browser/components/BrowsingTable';
 import Stats from './browser/components/Stats';
 import VisibilityToggle from './browser/components/VisibilityToggle';
 import msg from './msg';
@@ -115,10 +116,13 @@ const stats = {
       }
     });
 
+    // FIXME: this must be part of the browsing table component
     if (this.isAdmin && options.hasDisabledItems) {
       ReactDOM.render(<VisibilityToggle uiLocaleDir={options.uiLocaleDir} />,
                       q('.js-mnt-visibility-toggle'));
     }
+    ReactDOM.render(<BrowsingTable data={options.data} />,
+                    document.querySelector('.js-mnt-browsing-table'));
 
     ReactDOM.render(
       <Stats

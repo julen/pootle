@@ -660,6 +660,12 @@ class PootleBrowseView(PootleDetailView):
                 'disabled_items': self.disabled_items,
             }
 
+    def browsing_data(self):
+        return {
+            'items': self.items,
+            'stats': self.stats,
+        }
+
     def get(self, *args, **kwargs):
         response = super(PootleBrowseView, self).get(*args, **kwargs)
         if self.cookie_data:
@@ -705,26 +711,29 @@ class PootleBrowseView(PootleDetailView):
             limit=TOP_CONTRIBUTORS_CHUNK_SIZE + 1,
         )
 
-        ctx.update(
-            {'page': 'browse',
-             'stats_refresh_attempts_count':
-                 settings.POOTLE_STATS_REFRESH_ATTEMPTS_COUNT,
-             'stats': self.stats,
-             'translation_states': get_translation_states(self.object),
-             'checks': get_qualitycheck_list(self.object),
-             'can_translate': can_translate,
-             'can_translate_stats': can_translate_stats,
-             'url_action_continue': url_action_continue,
-             'url_action_fixcritical': url_action_fixcritical,
-             'url_action_review': url_action_review,
-             'url_action_view_all': url_action_view_all,
-             'table': self.table,
-             'is_store': self.is_store,
-             'top_scorers': top_scorers,
-             'top_scorers_data': get_top_scorers_data(
-                 top_scorers,
-                 TOP_CONTRIBUTORS_CHUNK_SIZE),
-             'browser_extends': self.template_extends})
+        ctx.update({
+            'page': 'browse',
+            'stats_refresh_attempts_count':
+                settings.POOTLE_STATS_REFRESH_ATTEMPTS_COUNT,
+            'stats': self.stats,
+            'translation_states': get_translation_states(self.object),
+            'checks': get_qualitycheck_list(self.object),
+            'can_translate': can_translate,
+            'can_translate_stats': can_translate_stats,
+            'url_action_continue': url_action_continue,
+            'url_action_fixcritical': url_action_fixcritical,
+            'url_action_review': url_action_review,
+            'url_action_view_all': url_action_view_all,
+            'table': self.table,
+            'is_store': self.is_store,
+            'top_scorers': top_scorers,
+            'top_scorers_data': get_top_scorers_data(
+                top_scorers,
+                TOP_CONTRIBUTORS_CHUNK_SIZE
+            ),
+            'browser_extends': self.template_extends,
+            'browsing_data': self.browsing_data,
+        })
 
         return ctx
 

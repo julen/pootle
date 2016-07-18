@@ -80,26 +80,15 @@ def get_table_headings(choices):
 def make_generic_item(path_obj, **kwargs):
     """Template variables for each row in the table."""
     return {
-        'name': {
-            'title': path_obj.name,
-            'href': path_obj.get_absolute_url(),
-        },
-        'total': {
-            'href': path_obj.get_translate_url(),
-        },
-        'todo': {
-            'href': path_obj.get_translate_url(state='incomplete', **kwargs),
-        },
-        'suggestions': {
-            'href': path_obj.get_translate_url(state='suggestions', **kwargs),
-        },
-        'critical': {
-            'href': path_obj.get_critical_url(**kwargs),
-        },
+        'href': path_obj.get_absolute_url(),
+        'href_all': path_obj.get_translate_url(),
+        'href_todo': path_obj.get_translate_url(state='incomplete', **kwargs),
+        'href_sugg': path_obj.get_translate_url(state='suggestions', **kwargs),
+        'href_critical': path_obj.get_critical_url(**kwargs),
+        'title': path_obj.name,
         'code': path_obj.code,
         'is_disabled': getattr(path_obj, 'disabled', False),
     }
-
 
 def make_directory_item(directory, **filters):
     item = make_generic_item(directory, **filters)
@@ -144,13 +133,51 @@ def get_parent(path_obj):
     }
 
 
-def make_project_item(translation_project):
-    item = make_generic_item(translation_project)
-    item.update({
+def new_make_generic_item(path_obj, stats, **kwargs):
+    return {
+        'name': {
+            'title': path_obj.name,
+            'href': path_obj.get_absolute_url(),
+        },
+        'progress': {
+            'total': stats['total'],
+            'translated': stats['translated'],
+            'fuzzy': stats['fuzzy'],
+        },
+        'total': {
+            'count': stats['total'],
+            'href': path_obj.get_translate_url(),
+        },
+        'critical': {
+            'count': stats['critical'],
+            'href': path_obj.get_critical_url(**kwargs),
+        },
+        'suggestions': {
+            'count': stats['suggestions'],
+            'href': path_obj.get_translate_url(state='suggestions', **kwargs),
+        },
+        'todo': {
+            'count': stats['total'] - stats['translated'] if stats['total'] else None,
+            'href': path_obj.get_translate_url(state='incomplete', **kwargs),
+        },
+        'last_event': stats['lastaction'],
+        'code': path_obj.code,
+        'is_disabled': getattr(path_obj, 'disabled', False),
+    }
+
+
+def new_make_project_item(translation_project, stats):
+    item = new_make_generic_item(translation_project, stats)
+    item['name'].update({
         'icon': 'project',
         'title': translation_project.project.name,
     })
-    item['name'].update({
+    return item
+
+
+def make_project_item(translation_project):
+    item = make_generic_item(translation_project)
+    item.update({
         'icon': 'project',
         'title': translation_project.project.name,
     })
@@ -160,10 +187,6 @@ def make_project_item(translation_project):
 def make_language_item(translation_project):
     item = make_generic_item(translation_project)
     item.update({
-        'icon': 'language',
-        'title': translation_project.language.name,
-    })
-    item['name'].update({
         'icon': 'language',
         'title': translation_project.language.name,
     })

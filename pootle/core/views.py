@@ -660,12 +660,6 @@ class PootleBrowseView(PootleDetailView):
                 'disabled_items': self.disabled_items,
             }
 
-    def browsing_data(self):
-        return {
-            'items': self.items,
-            'stats': self.stats,
-        }
-
     def get(self, *args, **kwargs):
         response = super(PootleBrowseView, self).get(*args, **kwargs)
         if self.cookie_data:
@@ -732,7 +726,7 @@ class PootleBrowseView(PootleDetailView):
                 TOP_CONTRIBUTORS_CHUNK_SIZE
             ),
             'browser_extends': self.template_extends,
-            'browsing_data': self.browsing_data,
+            'browsing_data': self.new_items,
         })
 
         return ctx

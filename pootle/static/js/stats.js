@@ -121,6 +121,7 @@ const stats = {
       ReactDOM.render(<VisibilityToggle uiLocaleDir={options.uiLocaleDir} />,
                       q('.js-mnt-visibility-toggle'));
     }
+    console.log(options.data)
     ReactDOM.render(<BrowsingTable data={options.data} />,
                     document.querySelector('.js-mnt-browsing-table'));
 

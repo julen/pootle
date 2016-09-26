@@ -687,14 +687,16 @@ PTL.editor = {
       $el.text()
     );
 
-    let newValues;
+    let newValues = ReactEditor.stateValues.slice();
+    const targetIndex = qAll('.js-translation-area').indexOf(this.focused);
     if (action === 'overwrite') {
-      newValues = this.updateFocusedValue(text);
+      newValues[targetIndex] = text;
+      ReactEditor.setProps({ overrideValues: newValues });
     } else {
+      // FIXME: figure out a sane way to update values and pass them down
+      // ReactEditor.setProps({ insertValues: newValues });
       newValues = this.updateFocusedValue(text, { overwrite: false });
     }
-
-    ReactEditor.setProps({ overrideValues: newValues });
   },
 
   copyTMText(e) {

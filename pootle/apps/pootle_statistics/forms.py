@@ -6,15 +6,15 @@
 # or later license. See the LICENSE file for a copy of the license and the
 # AUTHORS file for copyright and authorship information.
 
-"""Form fields required for handling translation files."""
-
 from django import forms
 
+from pootle.core.forms import PathForm
 
-class StatsForm(forms.Form):
+
+class StatsForm(PathForm):
 
     offset = forms.IntegerField(required=False)
-    path = forms.CharField(max_length=2048, required=True)
 
-    def clean_path(self):
-        return self.cleaned_data.get("path", "/") or "/"
+    def clean_offset(self):
+        offset = self.cleaned_data['offset']
+        return offset if offset else 0

@@ -314,3 +314,12 @@ class FormtableForm(PaginatingForm, FormWithActionsMixin):
             self.fields[self.search_field].queryset,
             self._results_per_page)
         return paginator.page(self._page_no)
+
+
+class PathForm(forms.Form):
+    """Form used for validating GET queryset parameters in a dispatcher view."""
+
+    path = forms.CharField(max_length=2048, required=True)
+
+    def clean_path(self):
+        return self.cleaned_data.get('path', '/') or '/'
